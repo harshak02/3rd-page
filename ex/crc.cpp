@@ -1,55 +1,61 @@
-#include<iostream>
 #include<vector>
+#include<iostream>
 using namespace std;
+                  
 
-vector<int> check(vector<int> &dividend,vector<int> &divisor,int m,int n){
+                    
+    void check(vector<int>&dividend,vector<int>&divisor){
+             int m=dividend.size();
+              int n=divisor.size();
 
-    for(int i =0;i<m-n+1;i++){
-        if(dividend[i]==0){
-            continue;
+              for(int i=0;i<m-n+1;i++){
+                if(dividend[i]==0){
+                    continue;
+                }
+                else{
+                    int k=0;
+                    for(int j=i;j<i+n;j++){
+                        dividend[j]=dividend[j]^divisor[k];
+                        k++;
+                    }
+                }
+              }
+
+    }   
+
+int main()
+{
+    
+    vector<int> dividend = {1,0,0,1,0,0,0,0,0};
+    vector<int> divisor = {1,1,0,1};
+    int m=dividend.size();
+    int n=divisor.size();
+
+    check(dividend,divisor);
+    for(auto iter : dividend){
+        cout<<iter<<" ";
+    }
+    cout<<endl;
+
+    cout<<"crc code:";
+
+    for(int i=m-n+1;i<m;i++){
+        cout<<dividend[i];
+    }
+    cout<<endl;
+    vector<int> D{1,0,0,1,0,0,0,0,1};
+    check(D,divisor);
+    int t=0;
+    for(int i=m-n+1;i<m;i++){
+        if(D[i]==1){
+            cout<<"incorrect data";
+            t=-1;
+            break;
         }
-        else{
-            int k = 0;
-            for(int j = i;j<i+n;j++){
-                dividend[j] = dividend[j]^dividend[k];
-                k++;
-            }
-        }
+    }
+    if(m!=-1){
+        cout<<"data perfect"<<endl;
     }
 
-    vector <int> remi;
-
-    for(int i = m-n+1;i<m;i++){
-        remi.push_back(dividend[i]);
-    }
-
-    return remi;
-}
-
-int main(){
-    vector <int> dividend{1,0,0,1,0,0,0,0,0,1,1,1,0};
-    vector <int> divisor{1,1,0,1};
-
-    int m = dividend.size();
-    int n = divisor.size();
-
-    vector <int> remi = check(dividend,divisor,m,n);
-    int remiSize = remi.size();
-
-    //replace the remi with the divi
-    for(int i = m-remiSize+1;i<m;i++){
-        dividend[i] = remi[i];
-    }
-
-    vector <int> remi2 = check(dividend,divisor,m,n);
-
-    for(int i = 0;i<remi2.size();i++){
-        if(remi2[i]==1){
-            cout<<"Incorrect data"<<endl;
-            return 0;
-        }
-    }
-
-    cout<<"Correct Data"<<endl;
-    return 0;
+     return 0;
 }
